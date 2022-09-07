@@ -1,25 +1,27 @@
-task :download do
-  sh "wget --recursive --page-requisites --html-extension --convert-links --restrict-file-names=windows --domains dlang.org --no-parent http://dlang.org/phobos/ || true"
-  mkdir_p "D.docset/Contents/Resources/"
-  mv "dlang.org", "D.docset/Contents/Resources/Documents"
-end
-
-task :restyle do
-  sh "sed -i '' 's/media only screen and (max-width: 50em)/media only screen/g' 'D.docset/Contents/Resources/Documents/css/style.css'"
+HOME = ENV["HOME"]
+desc "Prepare from installed ~/dlang/dmd*"
+task :prepare do
+  mkdir_p "D.docset/Contents/Resources/Documents"
+  sh "cp -R #{HOME}/dlang/dmd-*/html/d/ D.docset/Contents/Resources/Documents"
 end
 
 SQLITE_DB = "D.docset/Contents/Resources/docSet.dsidx"
+desc "Gen sqlite index"
 task :gen do
   ruby "gen.rb D.docset/Contents/Resources/Documents/phobos D.docset/Contents/Resources/Documents"
   rm SQLITE_DB if File.exist?(SQLITE_DB)
   sh "sqlite3 #{SQLITE_DB} < index.sql"
 end
 
-task :archive do
-  sh "tar --exclude='.DS_Store' -cvzf D.tgz D.docset"
-  sh "zip -r D.docset.zip D.docset"
+desc "Clean"
+task :clean do
+  rm_rf "D.docset"
+  sh "git restore D.docset"
 end
 
-task :clean do
-  rm_r "D.docset/Contents/Resources/Documents"
+desc "Install docset (for osx)"
+task :install do
+  cp_r "D.docset", "#{HOME}/Library/Application\ Support/Zeal/Zeal/docsets/"
 end
+
+task :default => [:clean, :prepare, :gen, :install]
