@@ -8,7 +8,7 @@ end
 SQLITE_DB = "D.docset/Contents/Resources/docSet.dsidx"
 desc "Gen sqlite index"
 task :gen do
-  ruby "gen.rb D.docset/Contents/Resources/Documents/phobos D.docset/Contents/Resources/Documents"
+  ruby "gen.rb D.docset/Contents/Resources/Documents D.docset/Contents/Resources/Documents phobos/Module spec/Section"
   rm SQLITE_DB if File.exist?(SQLITE_DB)
   sh "sqlite3 #{SQLITE_DB} < index.sql"
 end
