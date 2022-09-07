@@ -16,7 +16,7 @@ subpaths.each do |subpathSpec|
     doc = Nokogiri::HTML(text)
     title = doc.at_css(".hyphenate > h1")
     next unless title
-    page_name = title.text
+    page_name = title.text.gsub("'", "''")
     if m
       page_name = "#{m[1].rjust(2, '0')} - #{page_name}"
     end
