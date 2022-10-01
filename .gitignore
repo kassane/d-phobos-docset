@@ -1,3 +1,6 @@
 D.docset/Contents/Resources/Documents
 D.docset/Contents/Resources/docSet.dsidx
 index.sql
+.dub
+out/
+
