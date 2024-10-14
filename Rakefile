@@ -1,7 +1,7 @@
 desc "Download"
 task :download do
-  sh "wget --recursive --page-requisites --html-extension --convert-links --restrict-file-names=windows --domains dlang.org --no-parent http://dlang.org/articles/ || true"
-  #mkdir_p "D.docset/Contents/Resources/"
+  sh "wget --recursive --page-requisites --html-extension --convert-links --restrict-file-names=windows --domains dlang.org --no-parent http://dlang.org/documentation.html || true"
+  mkdir_p "D.docset/Contents/Resources/"
   mv "dlang.org", "D.docset/Contents/Resources/Documents"
 end
 
